@@ -1,0 +1,183 @@
+/* Parcelshop modal */
+.link-style{
+    cursor: pointer;
+    text-decoration: underline;
+    -webkit-transition: all 400ms ease;
+    transition: all 400ms ease;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    padding-left: 32px;
+}
+
+.parcelshop-modal{
+    visibility: hidden;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 95%;
+    height: 95%;
+    background-color: white;
+    z-index: 901;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+    padding: 20px;
+}
+
+#ppl-parcel-shop-map{
+    height: auto !important;
+}
+
+.close-parcelshop-modal{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+}
+
+.parcelshop-address{
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    padding-left: 32px;
+}
+/* Modal pro adresy */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 900; /* Ensure it's below the modal but above other content */
+    display: none; /* Hidden by default */
+    overflow: hidden;
+}
+
+.modal-popup-billing, .modal-popup-shipping{
+    display: none;
+}
+
+.modal-content {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.body-no-scroll {
+    overflow: hidden;
+    height: 100%;
+}
+
+.modal-popup{
+    .field-group {
+        display: flex;
+        justify-content: space-between;
+        margin: 0 0 29px !important;
+    }
+
+    .field-group .field {
+        flex: 1;
+    }
+
+    .field-group .field + .field {
+        margin-left: 20px;
+    }
+
+    .field-group .city-field:nth-child(1){
+        flex: 3;
+    }
+
+    .field-group .code-field:nth-child(2) {
+        flex: 1;
+    }
+}
+
+.select-address-label {
+    display: flex;
+    align-items: flex-start !important;
+    flex-direction: row !important;
+}
+
+.select-address-label .address-details {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.select-billing-address, .select-shipping-address {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.address-details{
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    line-height: 29px !important;
+}
+
+.select-shipping-address{
+    width: 524px;
+}
+
+.billing-address, .shipping-address {
+    border: 1px solid #ccc; /* Šedý rámeček */
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Lehký stín pro lepší vizuální oddělení */
+}
+.billing-address{
+    width: 324px;
+}
+
+.shipping-address{
+    width: 216px;
+}
+
+.billing-address label, .shipping-address label:not(.same-as-billing-label) {
+    display: flex;
+    align-items: center;
+}
+
+.billing-address input[type="radio"],.shipping-address input[type="radio"] {
+    margin-right: 10px;
+    margin-top: 4px !important;
+}
+
+#add-new-billing-address {
+    margin-top: 10px;
+}
+
+label.required::after {
+    content: "*";
+    color: red;
+    margin-left: 5px;
+}
+
+@media only screen and (max-width: 1215px) {
+    .forms-container{
+        display: block;
+    }
+    .select-address-label{
+        input{
+            max-width: none; !important;
+        }
+    }
+
+    .billing-address{
+        width: 285px;
+    }
+
+    .shipping-address{
+        width: 265px;
+    }
+
+    .select-shipping-address {
+        width: auto !important;
+
+        .same-as-billing-row{
+            flex-basis: 100%;
+        }
+
+    }
+}

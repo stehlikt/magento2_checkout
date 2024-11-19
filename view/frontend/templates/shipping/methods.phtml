@@ -1,0 +1,25 @@
+<div class="shipping-methods">
+    <div class="form-title">
+        <span><?php echo __('Způsob doručení') ?></span>
+    </div>
+    <div class="shipping-method-content">
+        <ul class="shipping-method-list">
+            <?php foreach ($block->getActiveShippingMethodsList() as $shipping): ?>
+                <li>
+
+                    <label for="shipping_method_<?php echo $shipping['code'] ?>">
+                        <input class="shipping-option" type="radio" name="shipping_method" value="<?php echo $shipping['code'] ?>" id="shipping_method_<?php echo $shipping['code'] ?>">
+                        <span class="shipping-method-title"><?php echo $shipping['title'];?></span>
+                        <?php if($shipping['price'] > 0): ?>
+                            <span class="shipping-method-price">+ <?php echo($shipping['price']) ?></span>
+                        <?php endif; ?>
+                        <?php if($shipping['code'] == 'parcelshop'): ?>
+                            <input type="hidden" name="parcelshop-pickup-point" class="parcelshop-pickup-point" />
+                            <br><span id="select-parcelshop-address" class="link-style">vybrat adresu doručení</span>
+                        <?php endif; ?>
+                    </label>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+</div>

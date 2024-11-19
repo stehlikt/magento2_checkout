@@ -1,0 +1,45 @@
+<div class="summary">
+    <h3>Souhrn objednávky</h3>
+
+    <div class="subtotal">
+        <span class="label">Součet</span>
+        <span class="value"><?= $this->formatPrice($this->getSubtotal());?></span>
+    </div>
+
+    <?php if($this->formatPrice($this->getDiscount()) > 0): ?>
+    <div class="discount">
+        <span class="label">Sleva</span>
+        <span class="value">-<?= $this->formatPrice($this->getDiscount()); ?></span>
+    </div>
+    <?php endif;?>
+
+    <div class="">
+        <span class="label">Daň</span>
+        <span class="value"><?= $this->formatPrice($this->getTax()); ?></span>
+    </div>
+
+    <div class="total">
+        <span class="label"><strong>Celkový součet</strong></span>
+        <span class="value"><strong><?= $this->formatPrice($this->getTotal()); ?></strong></span>
+    </div>
+
+    <div class="next-step">
+        <span class="label"></span>
+        <span class="value"><button class="checkout-button-red" id="next-step">K pokladně</button></span>
+    </div>
+    <?php if ($block->isFreeShippingActive() > 0): ?>
+        <span class="free-shipping-summary">
+        <i class="free-shipping-icon"></i>
+        <div id="minicart-freeshipping-banner" data-bind="scope:'freeshipping-banner'">
+            <!-- ko template: getTemplate() --><!-- /ko -->
+        </div>
+        <script type="text/x-magento-init">
+            {
+                "#minicart-freeshipping-banner": {
+                    "Magento_Ui/js/core/app": <?php /* @escapeNotVerified */ echo $block->getJsLayout();?>
+                }
+            }
+        </script>
+    </span>
+    <?php endif; ?>
+</div>

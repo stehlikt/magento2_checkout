@@ -1,0 +1,16 @@
+<div id="step1" class="checkout-step">
+    <h2 class="page-title">Nákupní košík</h2>
+    <?php
+    if ($block->isCartEmpty()) {
+        echo '<p>Váš košík je prázdný.</p>';
+    } else {
+    ?>
+    <div class="cart-container">
+        <?php
+        echo $this->getChildHtml('checkout.cart.items');
+        echo $this->getChildHtml('checkout.cart.summary');
+        } ?>
+    </div>
+    <?= $block->getChildHtml('checkout.shipping') ?>
+    <?= $block->getChildHtml('checkout.billing') ?>
+    </div>

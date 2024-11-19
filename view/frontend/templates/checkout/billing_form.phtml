@@ -1,0 +1,142 @@
+    <?php
+    $addresses = $block->getCustomerAddresses();
+    if (count($addresses)) {
+        ?>
+    <div class="billing-form">
+        <h2 class="form-title">Fakturační adresa</h2>
+        <div class="select-billing-address">
+            <?php foreach ($addresses as $index => $address) {
+                $name = $address->getFirstname() . ' ' . $address->getLastname();
+                $street = $address->getStreet();
+                $city = $address->getCity() . ', ' . $address->getPostCode();
+                $tel = $address->getTelephone();
+                if($address->getCompany() > '')
+                    $company = $address->getCompany();
+                else
+                    $company = '';
+                $id = $address->getId();
+                if ($address->getCountryId() == 'CZ')
+                    $country = "Česko";
+                elseif ($address->getCountryId() == 'SK')
+                    $country = "Slovensko";
+                ?>
+                <div class="billing-address">
+                    <label class="select-address-label" for="billing_<?php echo $index ?>">
+                        <input class="selected-address-shipping" type="radio" name="selected_address_billing" id="billing_<?php echo $index ?>"
+                               value="<?php echo $index ?>"
+                               <?php if ($address->isDefaultBilling()): ?>checked <?php endif; ?>>
+                        <div class="address-details">
+                        <strong><?php echo $name; ?><br></strong>
+                        <?php echo $company; ?><br>
+                        <?php echo $street[0]; ?><br>
+                        <?php echo $city; ?><br>
+                        <?php echo $country ?><br>
+                        <?php echo $tel; ?>
+                        </div>
+                    </label>
+                    <input type="hidden" name="billing_firstname_<?= $index ?>"
+                           value="<?php echo $address->getFirstname(); ?>">
+                    <input type="hidden" name="billing_lastname_<?= $index ?>"
+                           value="<?php echo $address->getLastname(); ?>">
+                    <input type="hidden" name="billing_company_<?= $index ?>"
+                           value="<?php echo $address->getCompany(); ?>">
+                    <input type="hidden" name="billing_city_<?= $index ?>" value="<?php echo $address->getCity(); ?>">
+                    <input type="hidden" name="billing_street_<?= $index ?>" value="<?php echo $street[0] ?>">
+                    <input type="hidden" name="billing_postcode_<?= $index ?>"
+                           value="<?php echo $address->getPostcode(); ?>">
+                    <input type="hidden" name="billing_country_<?= $index ?>"
+                           value="<?php echo $address->getCountryId(); ?>">
+                    <input type="hidden" name="billing_telephone_<?= $index ?>"
+                           value="<?php echo $address->getTelephone(); ?>">
+                    <input type="hidden" name="billing_vat_<?= $index ?>" value="">
+                </div>
+            <?php } ?>
+
+            <input type="hidden" name="billing[firstname]" value="">
+            <input type="hidden" name="billing[lastname]" value="">
+            <input type="hidden" name="billing[company]" value="">
+            <input type="hidden" name="billing[city]" value="">
+            <input type="hidden" name="billing[street]" value="">
+            <input type="hidden" name="billing[postcode]" value="">
+            <input type="hidden" name="billing[country]" value="">
+            <input type="hidden" name="billing[telephone]" value="">
+            <input type="hidden" name="billing[vat]" value="">
+            <input type="hidden" name="billing[tax]" value="">
+            <input type="hidden" name="billing[email]" value="<?php echo $block->getCustomerEmail() ?>">
+        </div>
+        <button class="checkout-button-red" type="button" id="add-new-billing-address">Přidat novou adresu</button>
+        <?php
+    } else {
+        ?>
+        <div class="billing-form">
+        <h2 class="form-title">Fakturační adresa</h2>
+        <form id="billing-form">
+            <div class="row">
+                <div class="field">
+                    <label class="required" for="firstname">Jméno</label>
+                    <input type="text" id="firstname" name="billing[firstname]" required placeholder="např. Jan">
+                </div>
+                <div class="field">
+                    <label class="required" for="lastname">Příjmení</label>
+                    <input type="text" id="lastname" name="billing[lastname]" required placeholder="např. Novák">
+                </div>
+            </div>
+            <div class="row">
+                <div class="field">
+                    <label class="required" for="email">E-mail</label>
+                    <input type="email" id="billing-email" name="billing[email]"
+                           data-validate="{required:true, 'validate-email':true}"
+                           placeholder="např. jan.novak@digihorizonty.cz">
+                </div>
+                <div class="field">
+                    <label class="required" for="telephone">Telefon</label>
+                    <input type="tel" id="telephone" name="billing[telephone]" required placeholder="např. 742 347 821">
+                </div>
+            </div>
+            <div class="row company-row">
+                <div class="field company">
+                    <label for="company">Název firmy</label>
+                    <input type="text" id="company" name="billing[company]" required
+                           placeholder="např. Digitální horizonty">
+                </div>
+            </div>
+            <div class="row company-row">
+                <div class="field vat">
+                    <label for="vat">IČ</label>
+                    <input type="text" id="vat" name="billing[vat]" required placeholder="např. 76543210">
+                </div>
+                <div class="field tax">
+                    <label for="tax">DIČ</label>
+                    <input type="text" id="tax" name="billing[tax]" placeholder="např. CZ76543210">
+                </div>
+            </div>
+            <div class="row">
+                <div class="field">
+                    <label class="required" for="street">Ulice a číslo popisné</label>
+                    <input type="text" id="street" name="billing[street]" required
+                           placeholder="např. Filipínského 4381/46">
+                </div>
+                <div class="field">
+                    <label class="required" for="city">Město</label>
+                    <input type="text" id="city" name="billing[city]" required placeholder="např. Brno-Židenice">
+                </div>
+            </div>
+            <div class="row">
+                <div class="field">
+                    <label class="required" for="postcode">PSČ</label>
+                    <input type="text" id="postcode" name="billing[postcode]" required placeholder="např. 615 00">
+                </div>
+                <div class="field">
+                    <label class="required" for="country">Země</label>
+                    <select id="country" name="billing[country]" required>
+                        <option value="CZ">Česká republika</option>
+                        <option value="SK">Slovenská republika</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+        <?php
+    }
+    ?>
+
+</div>

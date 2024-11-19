@@ -1,0 +1,9 @@
+<?php if ($block->isCouponApplied()): ?>
+        <span class="coupon-used">Použitý kupón: <?php echo $block->escapeHtml($block->getCouponCode()); ?></span>
+        <button class="checkout-button-red" id="remove_coupon">Zrušit kód</button>
+<?php else: ?>
+        <input type="text" id="coupon_code" name="coupon_code" placeholder="Zde napište slevový kód">
+        <button class="checkout-button-red" id="apply_coupon">Použít kód</button>
+<?php endif; ?>
+
+<input type="hidden" name="coupon-post-url" id="coupon-post-url" value="<?php echo $block->getUrl('checkout/cart/couponPost'); ?>" />

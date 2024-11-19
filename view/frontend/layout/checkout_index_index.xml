@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link src="Railsformers_Checkout::js/coupon.js" />
+        <link src="Railsformers_Checkout::js/cartActions.js" />
+        <link src="Railsformers_Checkout::js/checkout.js" />
+        <link src="Railsformers_Checkout::js/payment-shipping.js"/>
+
+        <css src="Railsformers_Checkout::css/checkout.css"/>
+        <css src="Railsformers_Checkout::css/modal.css"/>
+    </head>
+    <body>
+        <referenceBlock name="checkout.root" remove="true" >
+            <referenceContainer name="content">
+                <block class="Railsformers\Checkout\Block\StepOne" name="step1.wrapper" template="Railsformers_Checkout::step1.phtml">
+                    <block class="Railsformers\Checkout\Block\Cart\Summary" name="checkout.cart.summary" template="Railsformers_Checkout::cart/summary.phtml">
+                        <arguments>
+                            <argument name="jsLayout" xsi:type="array">
+                                <item name="components" xsi:type="array">
+                                    <item name="freeshipping-banner" xsi:type="array">
+                                        <item name="component" xsi:type="string">Railsformers_FreeshippingBanner/js/freeshippingbanner</item>
+                                        <item name="config" xsi:type="array">
+                                            <item name="template" xsi:type="string">Railsformers_FreeshippingBanner/freeshippingbanner/content</item>
+                                            <item name="priceLimit" xsi:type="helper" helper="Railsformers\FreeshippingBanner\Helper\Data::getPriceLimit" />
+                                            <item name="priceFormat" xsi:type="helper" helper="Railsformers\FreeshippingBanner\Helper\Data::getPriceFormat" />
+                                        </item>
+                                    </item>
+                                </item>
+                            </argument>
+                        </arguments>
+                    </block>
+                    <block class="Railsformers\Checkout\Block\Cart\Coupon" name="checkout.cart.coupon" template="Railsformers_Checkout::cart/coupon.phtml" />
+                    <block class="Railsformers\Checkout\Block\Cart\Items" name="checkout.cart.items" template="Railsformers_Checkout::cart/items.phtml" />
+                    <block class="Railsformers\Checkout\Block\Cart\CartActions" name="checkout.cart.actions" template="Railsformers_Checkout::cart/actions.phtml" />
+                </block>
+                <block class="Railsformers\Checkout\Block\StepTwo" name="step2.wrapper" template="Railsformers_Checkout::step2.phtml">
+                    <arguments>
+                        <argument name="jsLayout" xsi:type="array">
+                            <item name="components" xsi:type="array">
+                                <item name="checkout" xsi:type="array">
+                                    <item name="component" xsi:type="string">uiComponent</item>
+                                    <item name="children" xsi:type="array">
+                                        <item name="address-list" xsi:type="array">
+                                            <item name="component" xsi:type="string">Magento_Checkout/js/view/shipping-address/list</item>
+                                            <item name="displayArea" xsi:type="string">address-list</item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                        </argument>
+                    </arguments>
+                    <block class="Railsformers\Checkout\Block\Checkout\BillingAndShippingForm" name="checkout.billing_form" template="Railsformers_Checkout::checkout/billing_form.phtml" />
+                    <block class="Railsformers\Checkout\Block\Checkout\BillingAndShippingForm" name="checkout.shipping_form" template="Railsformers_Checkout::checkout/shipping_form.phtml" />
+                    <block class="Railsformers\Checkout\Block\Shipping\ShippingMethods" name="checkout.shipping.methods" template="Railsformers_Checkout::shipping/methods.phtml" />
+                    <block class="Railsformers\Checkout\Block\Payment\PaymentMethods" name="checkout.payment.methods" template="Railsformers_Checkout::payment/methods.phtml" />
+                    <block class="Railsformers\Checkout\Block\Cart\Items" name="checkout.step2.cart.items" template="Railsformers_Checkout::cart/items.phtml" />
+                    <block class="Railsformers\Checkout\Block\Checkout\FinalSummary" name="checkout.final.summary" template="Railsformers_Checkout::checkout/final_summary.phtml">
+                        <arguments>
+                            <argument name="jsLayout" xsi:type="array">
+                                <item name="components" xsi:type="array">
+                                    <item name="freeshipping-banner" xsi:type="array">
+                                        <item name="component" xsi:type="string">Railsformers_FreeshippingBanner/js/freeshippingbanner</item>
+                                        <item name="config" xsi:type="array">
+                                            <item name="template" xsi:type="string">Railsformers_FreeshippingBanner/freeshippingbanner/content</item>
+                                            <item name="priceLimit" xsi:type="helper" helper="Railsformers\FreeshippingBanner\Helper\Data::getPriceLimit" />
+                                            <item name="priceFormat" xsi:type="helper" helper="Railsformers\FreeshippingBanner\Helper\Data::getPriceFormat" />
+                                        </item>
+                                    </item>
+                                </item>
+                            </argument>
+                        </arguments>
+                    </block>
+                </block>
+            </referenceContainer>
+        </referenceBlock>
+    </body>
+</page>

@@ -1,0 +1,20 @@
+<div class="payment-methods">
+    <div class="form-title">
+        <span><?php echo __('Způsob platby') ?></span>
+    </div>
+    <div class="payment-method-content">
+        <ul class="payment-method-list">
+            <?php foreach ($block->getActivePaymentMethodsList() as $payment): ?>
+                <li>
+                    <label for="payment_method_<?php echo $payment['code'] ?>">
+                        <input class="payment-option" type="radio" name="payment_method" value="<?php echo $payment['code'] ?>" id="payment_method_<?php echo $payment['code'] ?>">
+                        <span class="payment-method-title"><?php echo $payment['title'] ?>
+                            <?php if($payment['price']): ?>
+                            <p class="payment-price payment-method-instructions">Za platbu dobírkou je příplatek: <span class="price">+ <?php echo($payment['price']); endif; ?></span></p>
+                        <p class="payment-method-instructions"><?php echo $payment['instructions'] ?></p>
+                    </label>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+</div>

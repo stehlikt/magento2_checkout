@@ -1,0 +1,66 @@
+<div class="final-summary">
+    <h2 class="form-title">Souhrn objednávky</h2>
+    <table>
+        <tr class="summary-item">
+            <td>Způsob platby</td>
+            <td class="payment-price"><?= $block->formatPrice($block->getPaymentAmount()) ?></td>
+        </tr>
+        <tr class="summary-item">
+            <td>Způsob dopravy</td>
+            <td class="shipping-price"><?= $block->formatPrice($block->getShippingAmount()) ?></td>
+        </tr>
+        <tr class="summary-item">
+            <td>Zboží</td>
+            <td><?= $block->formatPrice($block->getItemsTotal()) ?></td>
+        </tr>
+        <?php if($block->getDiscount() > 0): ?>
+        <tr class="summary-item">
+            <td>Sleva</td>
+            <td>- <?= $block->formatPrice($block->getDiscount()) ?></td>
+        </tr>
+        <?php endif; ?>
+        <tr class="summary-total-price summary-separator">
+            <td>Cena celkem bez DPH</td>
+            <td class="price-without-tax"><?= $block->formatPrice($block->getTotalAmountWithoutTax()) ?></td>
+        </tr>
+        <tr class="summary-total-price">
+            <td><strong>Cena celkem včetně DPH</strong></td>
+            <td class="price-with-tax"><strong><?= $block->formatPrice($block->getTotalAmountWithTax()) ?></strong></td>
+        </tr>
+    </table>
+    <!--
+    <label for="newsletter">
+        <input type="checkbox" id="newsletter" name="newsletter" value="1">
+        <span class="newsletter-title">Souhlasím s odběrem novinek</span>
+    </label>-->
+    <label for="heureka">
+        <input type="checkbox" id="heureka" name="heureka" value="1" <?php if(isset($_COOKIE['heurekaDisabled']) && $_COOKIE['heurekaDisabled'] == '1') echo 'checked'; ?>>
+        <span class="heureka-title">Nesouhlasím se zasláním dotazníku spokojenosti v rámci programu Ověřeno zákazníky, který pomáhá zlepšovat naše služby</span>
+    </label>
+    <p class="gdpr">Prohlašuji, že jsem se seznámil se <a href="/ochrana-osobnich-udaju" target="_blank"><strong>Zásadami zpracování osobních údajů</strong></a> i s <a href="/obchodni-podminky" target="_blank"><strong>obchodními podmínkami</strong></a> a chci objednávku odeslat.</p>
+
+    <table class="free-shipping-table">
+        <tr>
+            <?php if ($block->isFreeShippingActive() > 0): ?>
+            <td>
+                <div class="free-shipping-container">
+                    <i class="free-shipping-icon"></i>
+                    <div id="minicart-freeshipping-banner-final-summary" data-bind="scope:'freeshipping-banner'">
+                        <!-- ko template: getTemplate() --><!-- /ko -->
+                    </div>
+                    <script type="text/x-magento-init">
+                        {
+                            "#minicart-freeshipping-banner-final-summary": {
+                                "Magento_Ui/js/core/app": <?php /* @escapeNotVerified */ echo $block->getJsLayout();?>
+                        }
+                    }
+                    </script>
+                </div>
+            </td>
+            <?php endif; ?>
+            <td>
+                <button type="button" class="save-order">Objednat s poviností platby</button>
+            </td>
+        </tr>
+    </table>
+</div>

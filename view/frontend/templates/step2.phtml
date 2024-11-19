@@ -1,0 +1,219 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->get('Magento\Customer\Model\Session');
+if ($block->isCartEmpty()) {
+    echo '<p>Váš košík je prázdný.</p>';
+} else {
+?>
+<div id="step2" class="checkout-step ">
+    <h2 class="page-title">Doprava a platba</h2>
+    <div class="buttons-container">
+        <?php if(!$customerSession->isLoggedIn()): ?>
+        <div class="account-options-container">
+            <div class="account-options-switch">
+                <div class="account-option active" data-value="guest">Zaplatit jako host</div>
+                <div class="account-option" data-value="register">Chci se registrovat</div>
+                <div class="account-option" data-value="login">Chci se přihlásit</div>
+            </div>
+            <div class="login-container">
+                <?= $block->getLayout()->createBlock('Magento\Customer\Block\Form\Login')->setTemplate('Magento_Customer::form/login.phtml')->toHtml(); ?>
+            </div>
+        </div>
+        <?php endif; ?>
+        <div class="customer-type-switch">
+            <span>Nakupuji jako</span>
+            <div class="customer-type-switch-container">
+                <div class="customer-type-option active" data-value="individual">Soukromá osoba</div>
+                <div class="customer-type-option" data-value="company">Společnost</div>
+            </div>
+        </div>
+    </div>
+    <form id="order-form" data-mage-init='{"validation":{}}'>
+        <div class="checkout-container">
+            <div class="forms-container">
+                <?php
+                echo $this->getChildHtml('checkout.billing_form');
+                echo $this->getChildHtml('checkout.shipping_form');
+                ?>
+            </div>
+            <div class="shipping-payment-container">
+                <?php
+                echo $this->getChildHtml('checkout.shipping.methods');
+                echo $this->getChildHtml('checkout.payment.methods');
+                ?>
+            </div>
+            <?php
+            echo $this->getChildHtml('checkout.step2.cart.items');
+            ?>
+            <div class="order-note">
+                <label for="note"><i class="note-icon"></i> Poznámka pro prodejce</label>
+                <textarea rows="2" name="note" id="note"></textarea>
+            </div>
+            <div class="final-summary-container">
+                <?php echo $this->getChildHtml('checkout.final.summary'); ?>
+            </div>
+        </div>
+    </form>
+</div>
+<?php } ?>
+
+
+<div class="modal-overlay"></div>
+<div class="parcelshop-modal">
+    <button type="button" class="close-parcelshop-modal">X</button>
+    <div id="ppl-parcelshop-map">
+    </div
+</div>
+
+<!-- MODAL PRO NOVOU FAKTURAČNÍ ADRESU !-->
+<aside role="dialog" class="modal-popup modal-popup-billing modal-slide _inner-scroll _show" aria-labelledby="modal-title-75" aria-describedby="modal-content-75" data-role="modal" data-type="popup" tabindex="0" style="z-index: 902;">
+    <div data-role="focusable-start" tabindex="0"></div>
+    <div class="modal-inner-wrap" data-role="focusable-scope">
+        <header class="modal-header">
+            <h1 id="modal-title-75" class="modal-title">Fakturační adresa</h1>
+            <button class="action-close" data-role="closeBtn" type="button">
+                <span>Zavřít</span>
+            </button>
+        </header>
+        <div id="modal-content-75" class="modal-content">
+            <form class="form form-billing-address" id="co-billing-form" data-mage-init='{"validation":{}}'>
+                <div class="fieldset address">
+                    <div class=" field-group">
+                        <div class="field required">
+                            <label class="required" for="firstname">Jméno</label>
+                            <input type="text" id="nb-firstname" name="firstname" required>
+                        </div>
+                        <div class="field required">
+                            <label class="required" for="lastname">Příjmení</label>
+                            <input type="text" id="nb-lastname" name="lastname" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="company">Společnost</label>
+                        <input type="text" id="nb-company" name="company">
+                    </div>
+                    <div class="field field-group">
+                        <div class="field">
+                            <label for="ic">IČ</label>
+                            <input type="text" id="nb-ic" name="ic">
+                        </div>
+                        <div class="field">
+                            <label for="dic">DIČ</label>
+                            <input type="text" id="nb-dic" name="dic">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="required" for="street">Ulice</label>
+                        <input type="text" id="nb-street" name="street" required>
+                    </div>
+                    <div class="field required">
+                        <label class="required" for="country">Země</label>
+                        <select id="nb-country" name="country" required>
+                            <option value="CZ">Česko</option>
+                            <option value="SK">Slovensko</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <div class="field city-field required">
+                            <label class="required" for="city">Město</label>
+                            <input type="text" id="nb-city" name="city" required>
+                        </div>
+                        <div class="field code-field required">
+                            <label class="required" for="postcode">PSČ</label>
+                            <input type="text" id="nb-postcode" name="postcode" required>
+                        </div>
+                    </div>
+                    <div class="field required">
+                        <label class="required" for="telephone">Telefonní číslo</label>
+                        <input type="text" id="nb-telephone" name="telephone" required>
+                    </div>
+                </div>
+                <input id="save_new_billing_address" name="save_new_billing_address" type="checkbox" value="1">
+                <label for="save_new_billing_address">Uložit do adresáře</label>
+            </form>
+        </div>
+        <footer class="modal-footer">
+            <button class="action primary action-save-billing-address" type="button">Ship Here</button>
+            <button class="action secondary action-hide-popup" type="button">Zrušit</button>
+        </footer>
+    </div>
+    <div data-role="focusable-end" tabindex="0"></div>
+</aside>
+
+<!-- MODAL PRO NOVOU DODACÍ ADRESU !-->
+<aside role="dialog" class="modal-popup modal-popup-shipping modal-slide _inner-scroll _show" aria-labelledby="modal-title-75" aria-describedby="modal-content-75" data-role="modal" data-type="popup" tabindex="0" style="z-index: 902;">
+    <div data-role="focusable-start" tabindex="0"></div>
+    <div class="modal-inner-wrap" data-role="focusable-scope">
+        <header class="modal-header">
+            <h1 id="modal-title-75" class="modal-title">Dodací adresa</h1>
+            <button class="action-close" data-role="closeBtn" type="button">
+                <span>Zavřít</span>
+            </button>
+        </header>
+        <div id="modal-content-75" class="modal-content">
+            <form class="form form-shipping-address" id="co-shipping-form" data-mage-init='{"validation":{}}'>
+                <div class="fieldset address">
+                    <div class=" field-group">
+                        <div class="field required">
+                            <label class="required" for="firstname">Jméno</label>
+                            <input type="text" id="ns-firstname" name="firstname" required>
+                        </div>
+                        <div class="field required">
+                            <label class="required" for="lastname">Příjmení</label>
+                            <input type="text" id="ns-lastname" name="lastname" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="company">Společnost</label>
+                        <input type="text" id="ns-company" name="company">
+                    </div>
+                    <div class="field field-group">
+                        <div class="field">
+                            <label for="ic">IČ</label>
+                            <input type="text" id="ns-ic" name="ic">
+                        </div>
+                        <div class="field">
+                            <label for="dic">DIČ</label>
+                            <input type="text" id="ns-dic" name="dic">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="required" for="street">Ulice</label>
+                        <input type="text" id="ns-street" name="street" required>
+                    </div>
+                    <div class="field required">
+                        <label class="required" for="country">Země</label>
+                        <select id="ns-country" name="country" required>
+                            <option value="CZ">Česko</option>
+                            <option value="SK">Slovensko</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <div class="field city-field required">
+                            <label class="required" for="city">Město</label>
+                            <input type="text" id="ns-city" name="city" required>
+                        </div>
+                        <div class="field code-field required">
+                            <label class="required" for="postcode">PSČ</label>
+                            <input type="text" id="ns-postcode" name="postcode" required>
+                        </div>
+                    </div>
+                    <div class="field required">
+                        <label class="required" for="telephone">Telefonní číslo</label>
+                        <input type="text" id="ns-telephone" name="telephone" required>
+                    </div>
+                </div>
+                <input id="save_new_shipping_address" name="save_new_shipping_address" type="checkbox" value="1">
+                <label for="save_new_shipping_address">Uložit do adresáře</label>
+            </form>
+        </div>
+        <footer class="modal-footer">
+            <button class="action primary action-save-shipping-address" type="button">Ship Here</button>
+            <button class="action secondary action-hide-popup" type="button">Zrušit</button>
+        </footer>
+    </div>
+    <div data-role="focusable-end" tabindex="0"></div>
+</aside>
+
+
+<input type="hidden" name="currency" id="currency" value="<?php echo $_SESSION['CURRENCY_SYMBOL'] ?>" />

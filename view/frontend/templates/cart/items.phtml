@@ -1,0 +1,63 @@
+<?php
+$layout = $block->getLayout();
+$couponBlock = $block->getLayout()->getBlock('checkout.cart.coupon');
+$actionsBlock = $layout->getBlock('checkout.cart.actions')
+?>
+<div class="cart-items cart-items-width">
+    <table>
+        <thead>
+        <tr>
+            <th>Položky v košíku</th>
+            <th>Cena za kus</th>
+            <th>Množství</th>
+            <th>Cena celkem</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($block->getItems() as $item): ?>
+            <tr>
+                <td>
+                    <div class="product-colum-div">
+                        <div class="product-thumb">
+                            <img src="<?php echo $item['thumb'] ?>" alt="Product Thumbnail">
+                        </div>
+                        <div>
+                            <span class="cart-item-name"><?php echo $item->getName() ?> <!--<i class="info-icon"></i>--></span>
+                            <p class="cart-item-sku">SKU: <?php echo $item->getSku() ?></p>
+                        </div>
+                    </div>
+                    <!--<p class="cart-item-text">frakce 4-8 mm, tloušťka 1,5 cm, pojivo Epostone</p>-->
+                </td>
+                <td><?= $this->formatPrice($item->getPriceInclTax(), false) ?></td>
+                <td>
+                    <button type="button" class="quantity-button quantity-minus" data-item-id="<?= $item->getId() ?>">-</button>
+                    <input class="quantity-input" type="number" name="qty[<?= $item->getId() ?>]"
+                           value="<?= $item->getQty() ?>" min="1">
+                    <button type="button" class="quantity-button quantity-plus" data-item-id="<?= $item->getId() ?>">+</button>
+                </td>
+                <td><strong><?= $this->formatPrice($item->getRowTotalInclTax(), true) ?></strong></td>
+                <td>
+                    <a class="remove-cart-item" href="<?php echo $block->getUrl('railsformers_checkout/cart/delete', ['id' => $item->getId()]) ?>"></a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        <tr class="coupon-col">
+            <td class="coupon-col-title"><span class="discount-icon"></span>Slevový kód pro nákup</td>
+            <td></td>
+            <td class="coupon-col-input" colspan="4"><?php if ($couponBlock) {
+                    echo $couponBlock->toHtml();
+            }else
+                    echo $block->getData('couponBlockHtml')
+            ?></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="cart-actions">
+        <?php if ($actionsBlock) {
+            echo $actionsBlock->toHtml();
+        }else
+            echo $block->getData('actionsBlockHtml');?>
+    </div>
+</div>

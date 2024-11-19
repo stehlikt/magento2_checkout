@@ -1,0 +1,5 @@
+<button type="button" id="update-cart-btn"><i class="refresh-cart-icon"></i> Aktualizovat košík</button>
+
+<button type="button" id="delete-all-cart-btn"><a href="<?php echo $block->getUrl('railsformers_checkout/cart/deleteall') ?>"><i class="delete-cart-items-icon"></i> Vyprázdnit košík</a></button>
+
+<input type="hidden" name="update-cart-url" id="update-cart-url" value="<?php echo $block->getUrl('railsformers_checkout/cart/updateitemqty'); ?>" />

@@ -1,0 +1,143 @@
+<?php
+$addresses = $block->getCustomerAddresses();
+if (count($addresses)) {
+    ?>
+    <div class="shipping-form">
+        <h2 class="form-title">Dodací adresa</h2>
+        <div class="select-shipping-address shipping-form-div">
+            <div class="row same-as-billing-row">
+                <label class="same-as-billing-label" for="same-as-billing">
+                    <input type="checkbox" id="same-as-billing" name="same-as-billing">
+                    Fakturační adresa je stejná jako dodací adresa
+                </label>
+            </div>
+            <?php foreach ($addresses as $index => $address) {
+                $name = $address->getFirstname() . ' ' . $address->getLastname();
+                $street = $address->getStreet();
+                $city = $address->getCity() . ', ' . $address->getPostCode();
+                $tel = $address->getTelephone();
+                if($address->getCompany() > '')
+                    $company = $address->getCompany();
+                else
+                    $company = '';
+                $id = $address->getId();
+                if ($address->getCountryId() == 'CZ')
+                    $country = "Česko";
+                elseif ($address->getCountryId() == 'SK')
+                    $country = "Slovensko";
+                ?>
+                <div class="shipping-address">
+                    <label class="select-address-label" for="shipping_address_<?php echo $index ?>">
+                        <input class="selected-address-shipping" type="radio" name="selected_address_shipping"
+                               id="shipping_address_<?php echo $index ?>" value="<?php echo $index ?>"
+                               <?php if ($address->isDefaultShipping()): ?>checked <?php endif; ?>>
+                        <div class="address-details">
+                            <strong><?php echo $name; ?></strong>
+                            <?php echo $company; ?><br>
+                            <?php echo $street[0]; ?><br>
+                            <?php echo $city; ?><br>
+                            <?php echo $country ?><br>
+                            <?php echo $tel; ?>
+                        </div>
+                    </label>
+                    <input type="hidden" name="shipping_firstname_<?= $index ?>"
+                           value="<?php echo $address->getFirstname(); ?>">
+                    <input type="hidden" name="shipping_lastname_<?= $index ?>"
+                           value="<?php echo $address->getLastname(); ?>">
+                    <input type="hidden" name="shipping_company_<?= $index ?>"
+                           value="<?php echo $address->getCompany(); ?>">
+                    <input type="hidden" name="shipping_city_<?= $index ?>" value="<?php echo $address->getCity(); ?>">
+                    <input type="hidden" name="shipping_street_<?= $index ?>" value="<?php echo $street[0] ?>">
+                    <input type="hidden" name="shipping_postcode_<?= $index ?>"
+                           value="<?php echo $address->getPostcode(); ?>">
+                    <input type="hidden" name="shipping_country_<?= $index ?>"
+                           value="<?php echo $address->getCountryId(); ?>">
+                    <input type="hidden" name="shipping_telephone_<?= $index ?>"
+                           value="<?php echo $address->getTelephone(); ?>">
+                    <input type="hidden" name="shipping_vat_<?= $index ?>" value="">
+                </div>
+            <?php } ?>
+            <input type="hidden" name="shipping[firstname]" value="">
+            <input type="hidden" name="shipping[lastname]" value="">
+            <input type="hidden" name="shipping[company]" value="">
+            <input type="hidden" name="shipping[city]" value="">
+            <input type="hidden" name="shipping[street]" value="">
+            <input type="hidden" name="shipping[postcode]" value="">
+            <input type="hidden" name="shipping[country]" value="">
+            <input type="hidden" name="shipping[telephone]" value="">
+            <input type="hidden" name="shipping[vat]" value="">
+            <input type="hidden" name="shipping[tax]" value="">
+            <input type="hidden" name="shipping[email]" value="<?php echo $block->getCustomerEmail() ?>">
+
+            <div class="address-button-div" style="flex-basis: 100%">
+                <button class="checkout-button-red" type="button" id="add-new-shipping-address">Přidat novou adresu
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <?php
+} else {
+    ?>
+    <div class="shipping-form">
+        <h2 class="form-title">Dodací adresa</h2>
+        <div class="shipping-form-div">
+            <div class="row same-as-billing-row">
+                <label class="same-as-billing-label" for="same-as-billing">
+                    <input type="checkbox" id="same-as-billing" name="same-as-billing">
+                    Fakturační adresa je stejná jako dodací adresa
+                </label>
+            </div>
+            <div class="row">
+                <div class="field">
+                    <label for="shipping-firstname">Jméno</label>
+                    <input type="text" id="shipping-firstname" name="shipping[firstname]" required
+                           placeholder="např. Jan">
+                </div>
+                <div class="field">
+                    <label for="shipping-lastname">Příjmení</label>
+                    <input type="text" id="shipping-lastname" name="shipping[lastname]" required
+                           placeholder="např. Novák">
+                </div>
+            </div>
+            <div class="row">
+                <div class="field">
+                    <label for="shipping-company">Název firmy</label>
+                    <input type="text" id="shipping-company" name="shipping[company]"
+                           placeholder="např. Digitální horizonty">
+                </div>
+                <div class="field">
+                    <label for="shipping-telephone">Telefon</label>
+                    <input type="tel" id="shipping-telephone" name="shipping[telephone]" required
+                           placeholder="např. 742 347 821">
+                </div>
+            </div>
+            <div class="row">
+                <div class="field">
+                    <label for="shipping-street">Ulice a číslo popisné</label>
+                    <input type="text" id="shipping-street" name="shipping[street]" required
+                           placeholder="např. Filipínského 4381/46">
+                </div>
+                <div class="field">
+                    <label for="shipping-city">Město</label>
+                    <input type="text" id="shipping-city" name="shipping[city]" required
+                           placeholder="např. Brno-Židenice">
+                </div>
+            </div>
+            <div class="row">
+                <div class="field">
+                    <label for="shipping-postcode">PSČ</label>
+                    <input type="text" id="shipping-postcode" name="shipping[postcode]" required
+                           placeholder="např. 615 00">
+                </div>
+                <div class="field">
+                    <label for="shipping-country">Země</label>
+                    <select id="shipping-country" name="shipping[country]">
+                        <option value="CZ">Česká republika</option>
+                        <option value="SK">Slovenská republika</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php } ?>
